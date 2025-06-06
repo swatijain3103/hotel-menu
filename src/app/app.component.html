@@ -1,84 +1,77 @@
 <nav class="navbar navbar-dark bg-dark d-flex justify-content-center">
-
     <span class="navbar-brand mb-0 h1">Hotel Menu</span>
-  
   </nav>
-  
   <div class="row">
-  
-    <div id="input" class="col-12 container" style="width: 229px; display: flex; flex-wrap: wrap; flex-direction: column; align-content: center; padding-top: 30px;">
-  
+    <div id="input" class="col-12 container">
       <label>Enter the customer name:</label><br />
-  
-      <input #customerNameInput class="form-control" style="height: 38px; width: 203px" type="text" id="customerName" placeholder="Customer Name" /><br />
-  
+      <input #customerNameInput class="form-control" type="text" id="customerName" placeholder="Customer Name" /><br />
       <label>Choose the dish:</label>
-  
       <select #dishSelect class="form-select" id="dropDown">
-  
         <option selected value="Burger">Burger</option>
-  
         <option value="Momo">Momo</option>
-  
         <option value="Noodles">Noodles</option>
-  
         <option value="Pizza">Pizza</option>
-  
         <option value="Pasta">Pasta</option>
-  
       </select>
   
       <!-- Button to add order -->
-  
       <button (click)="addOrder(customerNameInput, dishSelect)" id="addBtn" class="btn btn-dark btn-sm mt-2">Add</button>
-  
       <br />
-  
-    </div>
+    <!-- </div> -->
   
     <!-- Display the Ordered Items table only if orders exist -->
-  
     <div *ngIf="orders.length > 0" id="displayItems" class="container">
-  
-      <h5 style="margin-left: 25%;">Ordered items</h5><br />
-  
-      <table class="table table-striped table-hover w-50" id="center">
-  
+      <h5>Ordered items</h5><br />
+      <table class="table table-striped table-hover" style="width: 100% !important;" id="center">
         <thead>
-  
           <tr>
-  
             <th>Dish</th>
-  
             <th>Customer Name</th>
-  
+            <th>Quantity</th>
+            <th>Edit</th>
+            <th>Delete</th>
           </tr>
-  
         </thead>
   
         <tbody id="menuContent">
-  
-          <tr *ngFor="let order of orders">
-  
-            <td>{{ order.dish }}</td>
-  
+          <tr *ngFor="let order of orders; let i = index">
             <td>
-  
-              <ul>
-  
-                <li *ngFor="let customer of order.customers" class="list-unstyled">{{ customer }}</li>
-  
-              </ul>
-  
+              <ng-container *ngIf="editIndex === i; else showDish">
+                <input [(ngModel)]="orders[i].dish" class="form-control" type="text" (blur)="editIndex = null" autofocus />
+              </ng-container>
+              <ng-template #showDish>
+                {{order.dish}}
+              </ng-template>
             </td>
-  
+            <td>
+              <ul>
+                <li *ngFor="let customer of order.customers" class="list-unstyled">{{ customer }}</li>
+              </ul>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <button class="btn btn-outline-secondary" type="button" (click)="increaseQuantity(i)">
+                  <i class="bi bi-plus"></i>
+                </button><span class="mx-3">{{order.quantity}}</span>
+                <button class="btn btn-outline-secondary" type="button" (click)="decreaseQuantity(i)">
+                  <i class="bi bi-dash"></i>
+                </button>
+              </div>
+            </td>
+             <td>
+                <button class="btn btn-outline-secondary" type="button" (click)="editItem(i)">
+                  <i class="bi-pencil"></i>
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-outline-secondary" type="button" (click)="deleteItem(i)">
+                  <i class="bi-trash"></i>
+                </button>
+            </td>
           </tr>
-  
         </tbody>
-  
       </table>
-  
     </div>
-  
+  </div>
   </div>
    

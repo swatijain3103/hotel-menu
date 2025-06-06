@@ -7,6 +7,8 @@ import { MenubarModule } from 'primeng/menubar';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { RouterLink } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import {CommonModule} from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { RouterModule } from '@angular/router';
     AppRoutingModule,
     MenubarModule,
     TabMenuModule,
+    CommonModule,
+    FormsModule,
     RouterModule.forRoot([{ path: '', component: AppComponent}])
   ],
   providers: [],

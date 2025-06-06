@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 interface Order {
   dish: string;
   customers: string[];
+  quantity: number
  }
 
 @Component({
@@ -12,6 +13,8 @@ interface Order {
 })
 export class AppComponent {
   orders: Order[] = [];
+  count: number = 0;
+  editIndex: number | null = null;
  addOrder(customerNameInput: HTMLInputElement, dishSelect: HTMLSelectElement): void {
    const customerName = customerNameInput.value.trim();
    const selectedDish = dishSelect.value;
@@ -23,11 +26,31 @@ export class AppComponent {
        existingOrder.customers.push(customerName);
      } else {
        // If it doesn't exist, create a new order
-       this.orders.push({ dish: selectedDish, customers: [customerName] });
+       this.orders.push({ dish: selectedDish, customers: [customerName], quantity: 0 });
      }
      // Clear the input fields after adding the order
      customerNameInput.value = '';
      dishSelect.value = 'Burger'; // Set to default option
    }
+ }
+
+ increaseQuantity(index: number) {
+  this.orders[index].quantity++;
+
+
+ }
+ decreaseQuantity(index: number) {
+  if(this.orders[index].quantity > 1){
+    this.orders[index].quantity--;
+  }
+ }
+
+ editItem(index: number) {
+  this.editIndex = index;
+
+ }
+ deleteItem(index: number) {
+  this.orders.splice(index, 1);
+
  }
 }
